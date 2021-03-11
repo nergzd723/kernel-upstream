@@ -1,0 +1,59 @@
+// SPDX-License-Identifier: GPL-2.0
+
+
+/dts-v1/;
+
+#include "msm8956.dtsi"
+#include "pmi8950.dtsi"
+#include "pm8950.dtsi"
+#include "pm8004.dtsi"
+
+/ {
+	model = "Qualcomm Technologies, Inc. MSM8956 MTP";
+	compatible = "qcom,msm8956-mtp", "qcom,msm8956", "qcom,mtp";
+	qcom,board-id = <8 0>;
+    qcom,msm-id = <266 0>;
+	chosen {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+
+		framebuffer@0x83000000 {
+			compatible = "simple-framebuffer";
+			reg = <0x0 0x83000000 0x0 (1080 * 1920 * 4)>;
+			width = <1080>;
+			height = <1920>;
+			stride = <(1080 * 4)>;
+			format = "a8r8g8b8";
+		};
+	};
+
+	reserved-memory {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+
+	    cont_splash_mem: splash_region@83000000 {
+			reg = <0x0 0x83000000 0x0 0x2800000>;
+			no-map;
+		};
+    };
+};
+
+&msm_gpio {
+	gpio-reserved-ranges = <0 12>;
+	status = "okay";
+};
+
+&blsp1_uart1 {
+	status = "disabled";
+};
+
+&blsp1_uart2 {
+	status = "disabled";
+};
+
+&usb_hs_phy {
+	status = "ok";
+	qcom,init-seq = /bits/ 8 <0x73 0x80 0x38 0x81 0x1b 0x82 0xff 0xff 0xff 0xff>;
+};
